@@ -22,15 +22,62 @@
       raises(block, [expected], [message])
   */
 
-  module('SnakeJS', {
+  module('SnakeJS#theSnake', {
     setup: function() {
       this.snake = new SnakeJS.Snake();
+      this.food = new SnakeJS.Food();
     }
   });
 
 
-  test('exists', 1, function (){
+  test('snake exists', function () {
     ok(this.snake, 'it exists');
+  });
+
+  test('can eat', function () {
+    var eatFunction = this.snake.eat,
+      eatIsFunction = typeof this.snake.eat;
+    ok(this.snake, 'it exists');
+    ok(eatIsFunction === 'function', 'eat is a function');
+
+  });
+
+  test('grows when eating', function () {
+    var startingLength = this.snake.attr.length,
+      endingLengthShouldBe = startingLength + this.food.attr.value,
+      realLength;
+
+    this.snake.eat(this.food);
+    realLength = this.snake.attr.length;
+    strictEqual(realLength, endingLengthShouldBe, 'the snake grew');
+  });
+
+  test('we can change the food type', function (){
+    var startingType = this.food.attr.type,
+      endingType;
+    this.food.changeType('lemon');
+    endingType = this.food.attr.type;
+    notEqual(endingType, startingType, 'we changed the food type');
+
+  });
+
+    test('pineapple  makes snake supercharged', function (){
+    var startingSnake = this.snake.attr.supercharged,
+       snakelength = {};
+      this.pineapple = new SnakeJS.Food();
+      this.newApple = new SnakeJS.Food();
+      this.snake = new SnakeJS.Snake();
+     
+    
+    this.pineapple.changeType('pineapple');
+    this.snake.eat(this.pineapple);
+    snakelength.starting = this.snake.attr.length;
+    this.snake.eat(this.newApple);
+    snakelength.ending  = this.snake.attr.length;
+
+    equal(this.snake.attr.superpowered, true, 'the snake became superchared');
+    equal(snakelength.ending, snakelength.starting, 'the snake did not grow while supercharged');
+
   });
  
 }(jQuery));
