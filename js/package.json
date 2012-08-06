@@ -1,0 +1,33 @@
+{
+  "name": "snake",
+  "title": "SnakeJS",
+  "description": "A snake game",
+  "version": "0.1.0",
+  "homepage": "https://github.com/noweverywhere/SnakeJS",
+  "author": {
+    "name": "Marinus Swanepoel",
+    "email": "marinus@noweverywhere.ca",
+    "url": "noweverywhere.ca"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/noweverywhere/SnakeJS.git"
+  },
+  "bugs": {
+    "url": "https://github.com/noweverywhere/SnakeJS/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/noweverywhere/SnakeJS/blob/master/LICENSE-MIT"
+    },
+    {
+      "type": "GPL",
+      "url": "https://github.com/noweverywhere/SnakeJS/blob/master/LICENSE-GPL"
+    }
+  ],
+  "dependencies": {
+    "jquery": "~1.5"
+  },
+  "keywords": []
+}
