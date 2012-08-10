@@ -52,7 +52,8 @@ module.exports = function(grunt) {
         jQuery: true,
         $: true,
         Modernizr: true,
-        SnakeJS: true 
+        SnakeJS: true,
+        requestAnimationFrame: true
       }
     },
     uglify: {}

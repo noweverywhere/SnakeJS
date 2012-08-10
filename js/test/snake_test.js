@@ -61,12 +61,12 @@
 
   });
 
-    test('pineapple  makes snake supercharged', function (){
+  test('pineapple  makes snake supercharged', function (){
     var startingSnake = this.snake.attr.supercharged,
-       snakelength = {};
-      this.pineapple = new SnakeJS.Food();
-      this.newApple = new SnakeJS.Food();
-      this.snake = new SnakeJS.Snake();
+      snakelength = {};
+    this.pineapple = new SnakeJS.Food();
+    this.newApple = new SnakeJS.Food();
+    this.snake = new SnakeJS.Snake(); 
      
     
     this.pineapple.changeType('pineapple');
@@ -78,6 +78,23 @@
     equal(this.snake.attr.superpowered, true, 'the snake became superchared');
     equal(snakelength.ending, snakelength.starting, 'the snake did not grow while supercharged');
 
+  });
+
+  test('snake can move', function () {
+    var startPosition = this.snake.attr.head.x,
+      endPosition;
+    this.snake.move();
+    endPosition = this.snake.attr.head.x;
+    
+    equal(this.snake, this.snake, 'the snake did not grow while supercharged');
+
+  });
+
+  module('SnakeJS#TheFood', {
+    setup: function() {
+      this.snake = new SnakeJS.Snake();
+      this.map = new SnakeJS.Map();
+    }
   });
  
 }(jQuery));
