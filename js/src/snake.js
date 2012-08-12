@@ -6,7 +6,13 @@
  * Licensed under the MIT license.
  * 
  */
-var SnakeJS = {};
+var SnakeJS = {},
+requestAnimationFrame = 
+  window.requestAnimationFrame || 
+  window.mozRequestAnimationFrame ||
+  window.webkitRequestAnimationFrame || 
+  window.msRequestAnimationFrame;
+window.requestAnimationFrame = requestAnimationFrame;
 
 
   // Bring in the request Animation Frame feature to render the game
@@ -60,6 +66,7 @@ SnakeJS.Game.prototype.start = function () {
   //for some reason I feel like you should make the game start
   // and should not be able to just make the ticker start
   this.ticker.start();
+  this.render();
 };
 
 SnakeJS.Game.prototype.pause = function () {
@@ -102,6 +109,7 @@ SnakeJS.Ticker.prototype.addUpdateFunction = function () {
 SnakeJS.Ticker.prototype.tick = function () {
   // this function is where the game logic mechanics get run
   var functions;
+  //console.log('running game logic');
   for(functions in this.updateFunctions) {
     //avoiding making new variables that will have to be garbage collected
     // this function will be running all the time
@@ -115,8 +123,7 @@ SnakeJS.Ticker.prototype.start = function () {
   // simply using a timeout right now,
   // may want to combine this with the request animation frame
   // probably not
-  this.createEvent('step');
-  this.interval = this.setTimeout(
+  this.interval = setInterval(
     this.tick,
     this.attr.steptime
   );
@@ -125,7 +132,6 @@ SnakeJS.Ticker.prototype.start = function () {
 SnakeJS.Ticker.prototype.stop = function () {
   // stop the game. Start should resume it
   // unless we add things here to clear the objects
-  this.createEvent('stop');
   clearInterval(this.interval);
 };
 
@@ -161,25 +167,38 @@ SnakeJS.Map.prototype.Destroy = function () {
 };
 
 SnakeJS.Map.prototype.render = function () {
-   this.requestAnimationFrame(this.render);
+  // not sure whether I should give each obect on the map
+  // a render function or if I should write render functions
+  // for each type of object here
+
+  console.log('rendering!!!', this);
+
+  
+};
+
+SnakeJS.Map.prototype.stoprender = function () {
+  this.stopRender = true;
 };
 
 SnakeJS.Map.prototype.startrender = function () {
   // dont know how I will do this
-  this.requestAnimationFrame = 
-    window.requestAnimationFrame || 
-    window.mozRequestAnimationFrame ||
-    window.webkitRequestAnimationFrame || 
-    window.msRequestAnimationFrame;
-  window.requestAnimationFrame = this.requestAnimationFrame;
+  var renderfunction  = this.render;
+  SnakeJS.renderfunction = function () {
+    //console.log('SnakeJS this?', this);
+    renderfunction();
+    requestAnimationFrame(SnakeJS.renderfunction);
+  };
 
-  if (typeof this.requestAnimationFrame === 'function') {
-    this.requestAnimationFrame(this.render);
+  if (requestAnimationFrame) {
+   
+    requestAnimationFrame(SnakeJS.renderfunction);
   }
+  this.stopRender = false;
 
 };
 
 SnakeJS.Map.prototype.addObject = function (object) {
+  // will need to figure out how to make objects interact
   if (object.attr && object.attr.x) {
 
   }
