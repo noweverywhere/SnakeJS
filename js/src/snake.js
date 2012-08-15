@@ -153,9 +153,11 @@ SnakeJS.Map.prototype.Make = function () {
   var x = 0,
     y;
   this.blocks = {};
+  // first do the x-axis
   for (x; x < this.attr.size.x; x += 1) {
     y = 0;
     this.blocks[x] = {};
+    // then add the y-axis
     for (y; y < this.attr.size.y; y += 1) {
       this.blocks[x][y] = {};
     }
@@ -174,36 +176,44 @@ SnakeJS.Map.prototype.render = function (Map) {
   // be called using requestAnimationFrame "this" will
   // refer to the window. Else I can use this:
   // https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Function/bind
-  console.log('render', this);
+  //console.log('render', this);
 
-  if(Map.ghgh !== true){
-    Map.ghgh = true;
-    console.log(Map);
-  }
+  
 };
 
 SnakeJS.Map.prototype.stoprender = function () {
-  this.stopRender = true;
+  // if you want to stop the requestAnimationFrame loop
+  this.stop = true;
 };
 
 SnakeJS.Map.prototype.startrender = function () {
   // these variables below are used to pass
   // information to the function that will be 
   // run using requestAnimationFrame.
-  var map = this,
-    renderfunction = function () {
-    // Here I am creating a closure that is
-    console.log('running me');
-    var callRenderfunction = function () {
-      requestAnimationFrame(renderfunction());
-    };
-    return callRenderfunction;   
-    
+  var Map = this,
+    // store the MapObject that is referred to by "this"
+    // in a variable I can reference in the scope of a function
+    // defined in this scope here.
+    intervalFunction = function () {
+      //create a function that returns a function,
+      // this function that is returned is an encapsulation
+      // of the scope
+    var runfunction = function () {
+        // this "runfunction" is the function that will actually
+        // be called during the requestAnimationFrame
+        // call render on the map object using it's own scope
+        Map.render();
+        // here the function calls itself using the 
+        // requestAnimationFrame api if the map is not 
+        // supposed to be stopped call itself
+        if (Map.stop !== true) {
+          requestAnimationFrame(runfunction);
+        }
+      };
+    return runfunction;
   };
-
   if (requestAnimationFrame) {
-   
-    requestAnimationFrame(renderfunction);
+    requestAnimationFrame(intervalFunction());
   }
   this.stopRender = false;
 
