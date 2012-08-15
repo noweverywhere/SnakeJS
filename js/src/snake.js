@@ -174,6 +174,7 @@ SnakeJS.Map.prototype.render = function (Map) {
   // be called using requestAnimationFrame "this" will
   // refer to the window. Else I can use this:
   // https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Function/bind
+  console.log('render', this);
 
   if(Map.ghgh !== true){
     Map.ghgh = true;
@@ -189,18 +190,20 @@ SnakeJS.Map.prototype.startrender = function () {
   // these variables below are used to pass
   // information to the function that will be 
   // run using requestAnimationFrame.
-  var renderfunction = this.render,
-    map = this;
-
-  SnakeJS.renderfunction = function () {
+  var map = this,
+    renderfunction = function () {
     // Here I am creating a closure that is
-    renderfunction(map);
-    requestAnimationFrame(SnakeJS.renderfunction);
+    console.log('running me');
+    var callRenderfunction = function () {
+      requestAnimationFrame(renderfunction());
+    };
+    return callRenderfunction;   
+    
   };
 
   if (requestAnimationFrame) {
    
-    requestAnimationFrame(SnakeJS.renderfunction);
+    requestAnimationFrame(renderfunction);
   }
   this.stopRender = false;
 
