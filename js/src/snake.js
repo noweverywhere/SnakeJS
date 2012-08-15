@@ -11,8 +11,10 @@ requestAnimationFrame =
   window.requestAnimationFrame || 
   window.mozRequestAnimationFrame ||
   window.webkitRequestAnimationFrame || 
-  window.msRequestAnimationFrame;
+  window.msRequestAnimationFrame,
+  animationFunction;
 window.requestAnimationFrame = requestAnimationFrame;
+
 
 
   // Bring in the request Animation Frame feature to render the game
@@ -34,7 +36,7 @@ SnakeJS.Game = function (options) {
   };
 
   Game.init();
-  return Game;
+  return Game; 
 };
 
 SnakeJS.Game.prototype.render = function () {
@@ -166,14 +168,17 @@ SnakeJS.Map.prototype.Destroy = function () {
   this.blocks = {};
 };
 
-SnakeJS.Map.prototype.render = function () {
-  // not sure whether I should give each obect on the map
-  // a render function or if I should write render functions
-  // for each type of object here
+SnakeJS.Map.prototype.render = function (Map) {
+  // I need pass in the Map object that refers to a
+  // SnakeJS.Map instance. Since this function will
+  // be called using requestAnimationFrame "this" will
+  // refer to the window. Else I can use this:
+  // https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Function/bind
 
-  console.log('rendering!!!', this);
-
-  
+  if(Map.ghgh !== true){
+    Map.ghgh = true;
+    console.log(Map);
+  }
 };
 
 SnakeJS.Map.prototype.stoprender = function () {
@@ -181,11 +186,15 @@ SnakeJS.Map.prototype.stoprender = function () {
 };
 
 SnakeJS.Map.prototype.startrender = function () {
-  // dont know how I will do this
-  var renderfunction  = this.render;
+  // these variables below are used to pass
+  // information to the function that will be 
+  // run using requestAnimationFrame.
+  var renderfunction = this.render,
+    map = this;
+
   SnakeJS.renderfunction = function () {
-    //console.log('SnakeJS this?', this);
-    renderfunction();
+    // Here I am creating a closure that is
+    renderfunction(map);
     requestAnimationFrame(SnakeJS.renderfunction);
   };
 

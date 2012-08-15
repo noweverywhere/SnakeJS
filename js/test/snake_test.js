@@ -86,7 +86,7 @@
     this.snake.move();
     endPosition = this.snake.attr.head.x;
     
-    equal(this.snake, this.snake, 'the snake did not grow while supercharged');
+    equal(this.snake, this.snake, 'moved up');
 
   });
 
