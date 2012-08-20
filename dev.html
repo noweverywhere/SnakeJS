@@ -1,9 +1,8 @@
 <!DOCTYPE html> 
-<html class="no-js"> 
-<!--  
-      This file is the distribution file that loads in all the scripts
-      concatenated and minified. This demonstrated how the script should
-      be deployed
+<html class="no-js">
+<!--  This file is the dev file that loads in all the scripts 
+      seperately and unminified. That way I can easily test 
+      and see which file and on which line errors occur
 -->
   <head> 
   <title>SnakeJS -- Noweverywhere.ca</title> 
@@ -28,8 +27,12 @@
   </div><!-- end content -->
 
 </div><!-- end page -->
+<script src="./js/src/food.js"></script>
+<script src="./js/src/game_logic.js"></script>
+<script src="./js/src/player.js"></script>
+<script src="./js/src/map.js"></script>
+<script src="./js/src/ticker.js"></script>
 
-<script src="./js/dist/snake.min.js"></script>
 <script src="./js/script.js"></script>
 </body>
 </html>
